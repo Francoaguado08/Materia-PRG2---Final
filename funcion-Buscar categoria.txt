@@ -1,0 +1,58 @@
+/***
+Generar un archivo con los equipos que tengan al
+menos 10 jugadores inscriptos.
+Cada registro debe tener el ID de equipo,
+el nombre del equipo, y la categoría del deporte al que
+pertenece el equipo.
+
+Voy a necesitar leer los archivos de jugadores, equipos y
+deportes
+
+*/
+
+int buscarCategoria(int idDeporte){
+    ArchivoDeportes arcD("deportes.dat");
+    Deporte objD;
+    int cant=arcD.contarRegistros();
+    for(int i=0; i<cant; i++){
+        objD=arcD.leerRegistro(i);
+        if(objD.getIdDeporte()==idDeporte){
+            return objD.getIdCtegoria();
+        }
+    }
+    return -1;
+}
+
+void puntoA(){
+    ArchivoEquipos arcE("equipos.dat");
+    Equipo objE;
+    ArchivoJugadores arcJ("jugadores.dat");
+    Jugador objJ;
+    ArchivoEquipoMas10 arcN("equipoMas10.dat");
+    EquiposMas10 objN;
+    int cont, idDeporte;
+    int cantEq=arcE.contarRegistros();
+    int cantJug=arcJ.contarRegistros();
+    for(int i=0; i<cantEq; i++){
+        objE=arcE.leerRegistro(i);
+        cont=0;
+        if(objE.getEstado()){
+            for(int j=0; j<cantJug; j++){
+                objJ=arcJ.leerRegistro(j);
+                if(objJ.getEstado()){
+                    if(objE.getIdEquipo()==objJ.getIdEquipo()){
+                        cont++;
+                        idDeporte=objJ.getIdDeporte();
+                    }
+                }
+            }
+            if(cont>=10){
+                objN.setIdEquipo(objE.getIdEquipo());
+                objN.setNombre(objE.getNombre());
+                objN.setCategoriaDeporte(buscarCategoria(idDeporte));
+                objN.setEstado(true);
+                arcN.grabarRegistro(objN);
+            }
+        }
+    }
+}

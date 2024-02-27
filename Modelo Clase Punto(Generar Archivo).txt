@@ -1,0 +1,179 @@
+
+
+MODELO SOLUCION PUNTO PARA LA CREACION DE UN NUEVO ARCHIVO.
+
+/// CLASE PARA LOS ATRIBUTOS QUE TE PIDE TENER EL NUEVO ARCHIVO.
+class SolucionPunto{
+private:
+        int codRestaurante;
+        char nombreRestaurante[50];
+        int cantVentas;
+        bool estado ;
+
+
+
+    public:
+        /// CONSTRUCTORES
+
+
+
+        /// CONSTRUCTOR CON VALORES DE OMISION.
+        SolucionPunto(int codigo=0, const char *nom = "-", int cantV = 0){
+                     codRestaurante = codigo;
+                     strcpy(nombreRestaurante, nom);
+                     cantVentas = cantV;
+                     estado =true;
+                     }
+
+
+        //SETS
+        void setCodRestaurante(int i){ codRestaurante = i; }
+        void setNombreRestaurante(const char* n){ strcpy(nombreRestaurante,n); }
+        void setCantVentas(int i){ cantVentas = i; }
+
+
+        //GETS
+        int getCodRestaurante(){ return codRestaurante; }
+        const char* getNombreRestaurante(){ return nombreRestaurante; }
+        int getCantVentas(){ return cantVentas;}
+        bool getEstado(){return estado;}
+
+        //OTROS
+        void Mostrar(){
+            if( estado ){
+                cout << codRestaurante<< endl;
+                cout << nombreRestaurante << endl;
+                cout << cantVentas << endl;
+
+            }
+        }
+
+        /*void operator=(Tecnico &obj){
+            DNI = obj.getDNI();
+        }
+
+
+        bool operator=(Tecnico &obj){
+        if(strcpy(nombre,obj.getNombre()))return true;
+        return false;*/
+
+
+
+        ///  PUNTO 3:
+        //  Agregar una sobrecarga para el operador == de la clase nueva del punto 1, que reciba
+        //  como parámetro un objeto de la misma clase*/
+
+        bool operator==(SolucionPunto obj){
+        if(codRestaurante == obj.getCodRestaurante())return true;
+        return false;}
+
+
+    };
+
+/// ClASE PARA GENERAR LAS FUNCIONES DEL NUEVO ARCHIVO: CONTAR,ESCRIBIR,LISTAR,LEER.
+class ArchivoSolucionPunto{
+    private:
+        char nombre[30];
+    public:
+        ArchivoSolucionPunto(const char* n){
+            strcpy(nombre,n);
+        }
+
+        SolucionPunto leerRegistro(int pos){
+            SolucionPunto reg;
+            FILE *p=fopen(nombre, "rb");
+            if(p==NULL) return reg;
+            fseek(p, sizeof reg*pos,0);
+            fread(&reg, sizeof reg,1, p);
+            fclose(p);
+            return reg;
+        }
+        int contarRegistros(){
+            FILE *p=fopen(nombre, "rb");
+            if(p==NULL) return -1;
+            fseek(p, 0,2);
+            int tam=ftell(p);
+            fclose(p);
+            return tam/sizeof(SolucionPunto);
+        }
+
+
+        bool Escribir(SolucionPunto reg){
+            FILE *p=fopen(nombre, "ab");
+            if(p==NULL) return false;
+            bool escribio = fwrite(&reg, sizeof reg, 1, p);
+            fclose(p);
+            return escribio;
+        }
+
+       bool listarArchivo(){
+       SolucionPunto reg;
+       FILE *p;
+       p= fopen(nombre, "rb");
+       if(p == NULL){
+        cout << "NO SE PUDO ABRIR EL ARCHIVO." << endl;
+        return false;
+        }
+       while(fread(&reg, sizeof reg, 1, p)== 1){
+        reg.Mostrar();
+        cout << endl;
+        }
+       fclose(p);
+      return true;
+      }
+
+        void vaciar(){
+        FILE *p = fopen(nombre, "wb");
+        if (p == NULL){return ;}
+        fclose(p);
+        }
+   
+
+};
+
+/// SE RECORRE DOS ARCHIVOS. SE VERIFICA LA CONDICION Y LUEGO SE ESCRIBE EN EL NUEVO ARCHIVO.
+void solucionPunto1(){
+
+    ///  1)
+    ArchivoRestaurantes archiRest("restaurantes.dat");
+    int cantRegRest = archiRest.contarRegistros();
+    Restaurante regRest;
+    ///  2)
+    ArchivoVentas archiVentas("ventas.dat");
+    int cantRegVentas = archiVentas.contarRegistros();
+    Venta regVenta;
+    ///  3)
+    ArchivoSolucionPunto archi("Soluciones.dat");
+    SolucionPunto obj;
+    /// Inicializo el contador para contar Las Ventas.
+    int contador=0;
+
+    for(int i=0; i<cantRegRest;i++){
+        regRest=archiRest.leerRegistro(i);
+
+        for(int j=0; j<cantRegVentas;j++){
+            regVenta=archiVentas.leerRegistro(j);
+
+            if( (regRest.getCodigoRestaurante() == regVenta.getCodigoRestaurante()) &&
+                (regRest.getCategoria()== 2) && (regVenta.getFechaReserva().getAnio() == 2023) )
+                {
+                 contador++; // CANT DE VENTAS CON LAS CONDICIONES ESPECIFICADAS.
+                }
+
+
+        }
+
+         //cuando salgo de la iteracion chica, tengo los valores sin haberlo perdido antes de que itere.
+        // por lo tanto guarda los valores para cada tipo de restaurante.
+        obj.setCodRestaurante(regRest.getCodigoRestaurante());
+        obj.setNombreRestaurante(regRest.getNombre());
+        obj.setCantVentas(contador);
+
+        archi.Escribir(obj);
+
+
+    }
+
+    archi.listarArchivo();
+
+ }

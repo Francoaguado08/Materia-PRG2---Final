@@ -1,0 +1,48 @@
+/*Hacer una función (llamarla desde el mismo main() que llama a la función que resuelve el punto 1) para
+generar de manera dinámica un vector
+que contenga los socios que se hayan inscripto en un año que se ingresa por teclado. Listar el vector creado*/
+
+/// PUNTO 2 CORREGIDO.
+void solucionPunto2() {
+    int year;
+    cout << "Ingrese el año para filtrar los socios: ";
+    cin >> year;
+
+    ArchivoSocios regSoc ("socios.dat");
+    int tamSoc = regSoc.contarRegistros();
+    Socio reg;
+
+    int contador = 0;
+    for(int i=0; i<tamSoc; i++){
+        reg = regSoc.leerRegistro(i);
+        //reg.Mostrar();
+        if(reg.getInscripcion().getAnio()== year){
+            contador++;
+        }
+
+
+    }
+
+    Socio *vec = nullptr;
+    vec = new Socio[contador];
+    if (vec == nullptr) return;
+
+    int pos = 0;
+
+    for(int i=0; i<tamSoc; i++){
+        reg = regSoc.leerRegistro(i);
+        if(reg.getInscripcion().getAnio()== year){
+            vec[pos] = reg;
+            pos++;
+        }
+
+    }
+
+   for (int i = 0; i < contador; i++) {
+        vec[i].Mostrar();
+    }
+
+    delete vec;
+
+
+}

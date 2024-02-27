@@ -1,0 +1,61 @@
+CONSIGNAS : 
+
+/* PUNTO 1 : Generar un archivo con los socios que hayan tenido un turno para la especialidad con código 11.
+Cada registro debe tener el
++ código de socio, 
++ el nombre del socio  
++ la fecha del turno. 
+
+
+En caso
+de que haya más de un turno para esa especialidad se debe registrar la fecha del primero.*/
+
+PUNTO 2 : 
+/*Hacer una función (llamarla desde el mismo main() que llama a la función que resuelve el punto 1) para
+generar de manera dinámica un vector
+que contenga los socios que se hayan inscripto en un año que se ingresa por teclado. Listar el vector creado*/
+
+PUNTO 3:
+Hacer una sobrecarga de operador para la clase nueva del punto 1 que sea útil para la resolución de alguno de los puntos.
+
+turnos.dat
+socios.dat;
+medicos.dat
+especialidades.dat
+
+
+class Medico{
+private:
+    int IDpersonal;
+    char nombre[30];
+    char telefono[30];
+    char email[30];
+    char direccion[30];
+    bool estado;
+
+class Socio{
+private:
+    char codigoSocio[5];
+    int categoria;
+    char nombre[30];
+    char direccion[30];
+    char telefono[30];
+    char email[30];
+    Fecha inscripcion;
+    bool estado;
+
+class Especialidad{
+private:
+    int codigoEspecialidad, tipo;
+    char nombre[30];
+    bool estado;
+
+class Turno{
+private:
+    int numeroTurno;
+    char codigoSocio[5];
+    int codigoEspecialidad;
+    int IDpersonal;
+    float importe;
+    Fecha fechaTurno;
+    bool estado;

@@ -1,0 +1,27 @@
+
+Punto (1)
+/ *Generar un archivo con la cantidad de ventas que cada restaurante de la categoría 2 tuvo
+este año.
+Cada registro debe tener el siguiente formato:
+---->  Código de restaurante,
+---->  nombre de restaurante,
+-----> cantidad de ventas
+
+Listar el archivo generado.*/
+
+
+
+
+/*Punto 2
+Informar la provincia con menos cantidad de restaurantes de la categoría 1.*/
+
+
+
+
+/*Punto 3
+Agregar una sobrecarga para el operador == de la clase nueva del punto 1, que reciba
+como parámetro un objeto de la misma clase*/
+
+
+/*Punto 4
+Crear un vector dinámico para copiar y mostrar el archivo creado en el punto 1*/
